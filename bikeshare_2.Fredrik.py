@@ -10,6 +10,7 @@ def get_filters():
     """
     Asks user to specify a city, month, and day to analyze.
 
+
     Returns:
         (str) city - name of the city to analyze
         (str) month - name of the month to filter by, or "all" to apply no month filter
@@ -53,16 +54,16 @@ def load_data(city, month, day):
         df - Pandas DataFrame containing city data filtered by month and day
     """
     df=pd.read_csv(r"C:/Users/YI48150/OneDrive - Volvo Group/Fredrik Lindblad/Penta Industrial/Udacity/Python project 1/All project files/" + CITY_DATA[city])
-    
+
     if month != "all" and day != "all":
         df = df[(pd.to_datetime(df['Start Time']).dt.strftime("%B").str.lower() == month) & (pd.to_datetime(df['Start Time']).dt.strftime("%A").str.lower() == day)]
 
     else:
-        if month != "all": 
+        if month != "all":
             df = df[pd.to_datetime(df['Start Time']).dt.strftime("%B").str.lower() == month]
-    if day != "all": 
+    if day != "all":
         df = df[pd.to_datetime(df['Start Time']).dt.strftime("%A").str.lower() == day]
-        
+
     return df
 
 
@@ -76,9 +77,9 @@ def time_stats(df):
     df["month"] = pd.to_datetime(df['Start Time']).dt.strftime("%B").str.lower()
     most_common_month = df['month'].mode()[0]
     print('Most Common Month:', most_common_month)
-   
-   
-    
+
+
+
     # display the most common day of week
     df["day_of_week"] = pd.to_datetime(df['Start Time']).dt.strftime("%A").str.lower()
     most_common_day = df['day_of_week'].mode()[0]
@@ -142,18 +143,18 @@ def user_stats(df,city):
     print(ct.to_string(index=False))
     # Display counts of gender
     if city!="washington":
-        df["Gender"]=df["Gender"].fillna("Gender N/A")    
+        df["Gender"]=df["Gender"].fillna("Gender N/A")
         gender_ct=df["Gender"].value_counts().reset_index().rename(columns={"index" : "Gender", "Gender" : "Count of Gender"})
         print(gender_ct.to_string(index=False))
-    
-        
+
+
     # Display earliest, most recent, and most common year of birth
-      
-    df["Birth Year"] = pd.to_datetime(df['Start Time']).dt.strftime("%Y").str.lower() 
+
+    df["Birth Year"] = pd.to_datetime(df['Start Time']).dt.strftime("%Y").str.lower()
     print("Earliest birth year  " + str(df["Birth Year"].min()))
     print("Most recent birth year  " + str(df["Birth Year"].max()))
     print("Most common birth year  " + str(df["Birth Year"].mode()[0]))
-    
+
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -171,7 +172,7 @@ def view_data(df):
         return
 
 
-            
+
 def main():
     while True:
         city, month, day = get_filters()
